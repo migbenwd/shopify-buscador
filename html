@@ -1,0 +1,68 @@
+<!-- featured-products.liquid -->
+<section class="featured-products">
+  <div class="container">
+    <h2>Productos Destacados</h2>
+    <button id="show-products-btn" class="show-products-btn">MOSTRAR PRODUCTOS</button>
+    <div id="products-container" class="products-grid" style="display: none;">
+      {% assign allowed_skus = "PSN-AS261PSP-M1,1004789-GONHER" | split: "," %}
+      {% for product in collections.all.products limit: 10 %}
+        {% if allowed_skus contains product.variants.first.sku %}
+          <div class="product-card">
+            <a href="{{ product.url | within: product.collections.first }}">
+              <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title }}">
+              <h3>{{ product.title }}</h3>
+              <h4>SKU: {{ product.variants.first.sku }}</h4>
+              <p>{{ product.price | money }}</p>
+            </a>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  <style>
+    .featured-products {
+      padding: 20px;
+      background-color: #f8f8f8;
+    }
+    .featured-products .products-grid {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .featured-products .product-card {
+      flex: 1 1 calc(20% - 20px);
+      background: white;
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+    .featured-products .product-card img {
+      max-width: 100%;
+      height: auto;
+    }
+    .show-products-btn {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .show-products-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const showProductsBtn = document.getElementById('show-products-btn');
+      const productsContainer = document.getElementById('products-container');
+
+      showProductsBtn.addEventListener('click', function() {
+        productsContainer.style.display = 'flex';
+        showProductsBtn.style.display = 'none';
+      });
+    });
+  </script>
+</section>
